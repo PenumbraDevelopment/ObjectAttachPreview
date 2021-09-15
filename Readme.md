@@ -1,4 +1,4 @@
-## Created by Tugamars | https://forum.cfx.re/t/devtool-attach-object-to-ped-with-preview/4758930/2
+## Created by Tugamars | https://forum.cfx.re/t/devtool-attach-object-to-ped-with-preview/4758930
 
 ## Commands:
 
