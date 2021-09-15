@@ -1,5 +1,7 @@
 ## Created by Tugamars | https://forum.cfx.re/t/devtool-attach-object-to-ped-with-preview/4758930
 
+  Simple dev tool for visualizing object placement on Peds
+
 ## Commands:
 
     /co [OBJECT_NAME] [BONE] - Creates the object
