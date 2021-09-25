@@ -165,96 +165,103 @@ RegisterCommand("cst", function(source,args,rawCommand)
     tol=tonumber(args[1]);
 end)
 
-Citizen.CreateThread(function()
-    while not NetworkIsSessionStarted() do
-        Citizen.Wait(500)
-    end
-    while true do
-        local sleep = 1500
-        if object and editMode then
-            sleep  = 1
-            local playerPed = PlayerPedId()
-            local Waiting = 1500
-            local changed=false;
 
-            while editMode and object do
-                ---Base code from: https://forum.cfx.re/t/free-object-spawn-standalone/4757038
-                Waiting = 1
+RegisterCommand("plusz", function(source,args,rawCommand)
+    z=z+tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('plusz', '+ Z', 'keyboard', 'numpad8')
 
-                --- Numpad 8 > Altitude +
-                if IsControlPressed(0, 111) then
-                    z=z+tol;
-                    changed=true;
-                end
+RegisterCommand("minusz", function(source,args,rawCommand)
+    z=z-tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('minusz', '- Z', 'keyboard', 'numpad5')
 
-                ---Numpa 5 > Altitude -
-                if IsControlPressed(0, 110) then
-                    z=z-tol;
-                    changed=true;
-                end
-                --- Arrow up - Move Y
-                if IsControlPressed(0, 172) then
-                    y=y+tol;
-                    changed=true;
-                end
-                --- Arrow down - Move Y
-                if IsControlPressed(0, 173) then
-                    y=y-tol;
-                    changed=true;
-                end
-                --- Arrow left - Move X
-                if IsControlPressed(0, 174) then
-                    x=x-tol;
-                    changed=true;
-                end
-                --- Arrow right - Move X
-                if IsControlPressed(0, 175) then
-                    x=x+tol;
-                    changed=true;
-                end
+RegisterCommand("plusy", function(source,args,rawCommand)
+    y=y+tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('plusy', '+ Y', 'keyboard', 'up')
 
-                --- Numpad 7 - Z
-                if IsControlPressed(0, 117) then
-                    pz=pz-tol;
-                    changed=true;
-                end
-                --- Numpad 9 - Z
-                if IsControlPressed(0, 118) then
-                    pz=pz+tol;
-                    changed=true;
-                end
+RegisterCommand("minusy", function(source,args,rawCommand)
+    y=y-tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('minusy', '- Y', 'keyboard', 'down')
 
-                --- Numpad 4 - Y
-                if IsControlPressed(0, 124) then
-                    py=py-tol;
-                    changed=true;
-                end
-                --- Numpad 6 - Y
-                if IsControlPressed(0, 126) then
-                    py=py+tol;
-                    changed=true;
-                end
+RegisterCommand("plusx", function(source,args,rawCommand)
+    x=x+tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('plusx', '+ X', 'keyboard', 'right')
 
-                --- Numpad - - X
-                if IsControlPressed(0, 315) then
-                    px=px-tol;
-                    changed=true;
-                end
-                --- Numpad + - X
-                if IsControlPressed(0, 314) then
-                    px=px+tol;
-                    changed=true;
-                end
+RegisterCommand("minusx", function(source,args,rawCommand)
+    x=x-tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('minusx', '- X', 'keyboard', 'left')
 
-                if(changed) then
-                    DetachEntity(object,true,false);
-                    AttachEntityToEntity(object, playerPed, GetPedBoneIndex(playerPed, bones[bone]), x,y,z,px,py,pz,1, 1, 0, 0, 2, 1);
-                end
+--- Rotation
 
+RegisterCommand("pluspz", function(source,args,rawCommand)
+    pz=pz+tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('pluspz', '+ PZ', 'keyboard', 'numpad9')
 
-                Citizen.Wait(Waiting)
-            end
-        end
-        Citizen.Wait(sleep)
-    end
-end)
+RegisterCommand("minuspz", function(source,args,rawCommand)
+    pz=pz-tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('minuspz', '- PZ', 'keyboard', 'numpad7')
+
+RegisterCommand("pluspy", function(source,args,rawCommand)
+    py=py+tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('pluspy', '+ PY', 'keyboard', 'numpad6')
+
+RegisterCommand("minuspy", function(source,args,rawCommand)
+    py=py-tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('minuspy', '- PY', 'keyboard', 'numpad4')
+
+RegisterCommand("pluspx", function(source,args,rawCommand)
+    px=px+tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('pluspx', '+ PX', 'keyboard', 'numpad3')
+
+RegisterCommand("minuspx", function(source,args,rawCommand)
+    px=px-tol;
+    changeCoords();
+end, false)
+RegisterKeyMapping('minuspx', '- PX', 'keyboard', 'numpad1')
+
+RegisterCommand("plustol", function(source,args,rawCommand)
+    tol=tol+0.05;
+    exports['t-notify']:Alert({
+        style = 'error',
+        message = "Tol is now: " .. tostring(tol)
+    })
+end, false)
+RegisterKeyMapping('plustol', '+ TOL', 'keyboard', 'add')
+
+RegisterCommand("minustol", function(source,args,rawCommand)
+    tol=tol-0.05;
+    exports['t-notify']:Alert({
+        style = 'error',
+        message = "Tol is now: " .. tostring(tol)
+    })
+end, false)
+RegisterKeyMapping('minustol', '- TOL', 'keyboard', 'subtract')
+
+function changeCoords()
+
+    DetachEntity(object,true,false);
+    local playerPed=PlayerPedId();
+    AttachEntityToEntity(object, playerPed, GetPedBoneIndex(playerPed, bones[bone]), x,y,z,px,py,pz,1, 1, 0, 0, 2, 1);
+
+end
